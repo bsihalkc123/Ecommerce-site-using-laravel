@@ -83,9 +83,9 @@
                 $('#imgpreview').show();
                }
            });
-           $("input[name='name']").on("change",function(){
-                $("input[name='slug']".val(stringToSlug($(this).val())));
-           });
+            $("input[name='name']").on("change",function(){
+                $("input[name='slug']").val(stringToSlug($(this).val()));
+            });
         });
         function stringToSlug(Text){
             return Text.toLowerCase()

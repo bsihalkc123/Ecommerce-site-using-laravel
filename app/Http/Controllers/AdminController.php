@@ -187,6 +187,7 @@ class AdminController extends Controller
             'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category_id' => 'required',
             'brand_id' => 'required',
+            'featured' => 'required|in:0,1',
 
         ]);
         $product = new Product();
@@ -201,6 +202,7 @@ class AdminController extends Controller
         $product->quantity = $request->quantity;    
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
+        $product->featured = $request->featured;
 
         $current_timestamp = Carbon::now()->timestamp;
 
@@ -265,6 +267,7 @@ class AdminController extends Controller
             'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category_id' => 'required',
             'brand_id' => 'required',
+            'featured' => 'required|in:0,1',
 
         ]);
         $product = Product::find($request->id);
@@ -279,6 +282,7 @@ class AdminController extends Controller
         $product->quantity = $request->quantity;    
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
+        $product->featured = $request->featured;
 
         $current_timestamp = Carbon::now()->timestamp;
 
@@ -343,5 +347,9 @@ class AdminController extends Controller
         }
         $product->delete();
         return redirect()->route('admin.products')->with('status', 'Product deleted successfully.');
+    }
+    public function product_view($id){
+    $product = Product::with(['category', 'brand'])->findOrFail($id);
+    return view('admin.product-view', compact('product'));
     }
 }
