@@ -147,7 +147,7 @@
 @push('scripts')
 
 <script>
-    $function(){        
+    $(function(){        
         $('.qty-control__increase').on('click', function(){
             $(this).closest('form').submit();
         });
@@ -155,7 +155,7 @@
         $('.qty-control__reduce').on('click', function(){
             $(this).closest('form').submit();
         });   
-    }
+    });
 </script>    
     
 @endpush
