@@ -9,7 +9,6 @@
         </div>
 
         <div class="pt-4 pt-lg-0"></div>
-
         <div class="accordion" id="categories-list">
           <div class="accordion-item mb-4 pb-3">
             <h5 class="accordion-header" id="accordion-heading-1">
@@ -26,38 +25,17 @@
             </h5>
             <div id="accordion-filter-1" class="accordion-collapse collapse show border-0"
               aria-labelledby="accordion-heading-1" data-bs-parent="#categories-list">
-              <div class="accordion-body px-0 pb-0 pt-3">
+              <div class="accordion-body px-0 pb-0 pt-3 category-list">
                 <ul class="list list-inline mb-0">
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Dresses</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Shorts</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Sweatshirts</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Swimwear</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Jackets</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">T-Shirts & Tops</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Jeans</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Trousers</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Men</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Jumpers & Cardigans</a>
-                  </li>
+                  @foreach ($categories as $category)
+                    <li class="list-item">
+                      <span class="menu-link py-1">
+                        <input type="checkbox" class="chk-category" name="categories" value="{{ $category->id }}"
+                        @if(in_array($category->id, explode(',', $f_categories ?? ''))) checked @endif>
+                        {{ $category->name }}</span>
+                      <span class="text-right float-end">({{ $category->products->count() }})</span>  
+                    </li>
+                  @endforeach
                 </ul>
               </div>
             </div>
@@ -148,50 +126,16 @@
             <div id="accordion-filter-brand" class="accordion-collapse collapse show border-0"
               aria-labelledby="accordion-heading-brand" data-bs-parent="#brand-filters">
               <div class="search-field multi-select accordion-body px-0 pb-0">
-                <select class="d-none" multiple name="total-numbers-list">
-                  <option value="1">Adidas</option>
-                  <option value="2">Balmain</option>
-                  <option value="3">Balenciaga</option>
-                  <option value="4">Burberry</option>
-                  <option value="5">Kenzo</option>
-                  <option value="5">Givenchy</option>
-                  <option value="5">Zara</option>
-                </select>
-                <div class="search-field__input-wrapper mb-3">
-                  <input type="text" name="search_text"
-                    class="search-field__input form-control form-control-sm border-light border-2"
-                    placeholder="Search" />
-                </div>
-                <ul class="multi-select__list list-unstyled">
-                  <li class="search-suggestion__item multi-select__item text-primary js-search-select js-multi-select">
-                    <span class="me-auto">Adidas</span>
-                    <span class="text-secondary">2</span>
-                  </li>
-                  <li class="search-suggestion__item multi-select__item text-primary js-search-select js-multi-select">
-                    <span class="me-auto">Balmain</span>
-                    <span class="text-secondary">7</span>
-                  </li>
-                  <li class="search-suggestion__item multi-select__item text-primary js-search-select js-multi-select">
-                    <span class="me-auto">Balenciaga</span>
-                    <span class="text-secondary">10</span>
-                  </li>
-                  <li class="search-suggestion__item multi-select__item text-primary js-search-select js-multi-select">
-                    <span class="me-auto">Burberry</span>
-                    <span class="text-secondary">39</span>
-                  </li>
-                  <li class="search-suggestion__item multi-select__item text-primary js-search-select js-multi-select">
-                    <span class="me-auto">Kenzo</span>
-                    <span class="text-secondary">95</span>
-                  </li>
-                  <li class="search-suggestion__item multi-select__item text-primary js-search-select js-multi-select">
-                    <span class="me-auto">Givenchy</span>
-                    <span class="text-secondary">1092</span>
-                  </li>
-                  <li class="search-suggestion__item multi-select__item text-primary js-search-select js-multi-select">
-                    <span class="me-auto">Zara</span>
-                    <span class="text-secondary">48</span>
-                  </li>
-                </ul>
+                <ul class="list list-inline mb-0 brand-list">
+                  @foreach ($brands as $brand)
+                    <li class="list-item">
+                      <span class="menu-link py-1">
+                        <input type="checkbox" name="brands" value="{{ $brand->id }}" class="chk-brand" 
+                        @if(in_array($brand->id, explode(',', $f_brands))) checked="checked" @endif>
+                        {{ $brand->name }}</span>
+                      <span class="text-right float-end">({{ $brand->products->count() }})</span>
+                    </li>
+                  @endforeach
               </div>
             </div>
           </div>
@@ -214,16 +158,16 @@
             </h5>
             <div id="accordion-filter-price" class="accordion-collapse collapse show border-0"
               aria-labelledby="accordion-heading-price" data-bs-parent="#price-filters">
-              <input class="price-range-slider" type="text" name="price_range" value="" data-slider-min="10"
-                data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]" data-currency="$" />
+              <input class="price-range-slider" type="text" name="price_range" value="" data-slider-min="1"
+                data-slider-max="2000" data-slider-step="5" data-slider-value="[{{ $min_price }},{{ $max_price }}]" data-currency="$" />
               <div class="price-range__info d-flex align-items-center mt-2">
                 <div class="me-auto">
                   <span class="text-secondary">Min Price: </span>
-                  <span class="price-range__min">$250</span>
+                  <span class="price-range__min">$1</span>
                 </div>
                 <div>
                   <span class="text-secondary">Max Price: </span>
-                  <span class="price-range__max">$450</span>
+                  <span class="price-range__max">$2000</span>
                 </div>
               </div>
             </div>
@@ -405,8 +349,8 @@
                 <h6 class="pc__title"><a href="{{route('shop.product.details',['product_slug'=>$product->slug])}}">{{ $product->name }}</a></h6>
                 <div class="product-card__price d-flex">
                   <span class="money price">
-                    @if($product->saleprice)
-                        <s>${{$product->regular_price}}</s> $ {{ $product->saleprice }}
+                    @if($product->sale_price)
+                        <s>${{$product->regular_price}}</s> $ {{ $product->sale_price }}
                     @else
                       ${{ $product->regular_price }}
                     @endif
@@ -455,20 +399,91 @@
     <input type="hidden" name="page" value="{{$products->currentPage()}}"/>
     <input type="hidden" name="size" id="size" value="{{$size}}"/>
     <input type="hidden" name="order" id="order" value="{{$order}}"/>
+    <input type="hidden" name="brands" id="hdnbrand"/>
+    <input type="hidden" name="categories" id="hdncategories"/>
+    <input type="hidden" id="hdnminprice" name="min_price" value="{{ $min_price ?? 1 }}">
+    <input type="hidden" id="hdnmaxprice" name="max_price" value="{{ $max_price ?? 2000 }}">
   </form>
 @endsection
-
 @push('scripts')
 <script>
-  $(function() {
-    $('#page-size').on('change', function() {
-      $('#size').val($('#page-size option:selected').val());
-      $('#frmfilter').submit();
-    })
-    $('#orderby').on('change', function() {
-      $('#order').val($('#orderby option:selected').val());
-      $('#frmfilter').submit();
-    })
+$(document).ready(function () {
+
+  /* ======================
+     PAGE SIZE
+  ====================== */
+  $('#page-size').on('change', function () {
+    $('#size').val($(this).val());
+    $('#frmfilter').submit();
   });
+
+  /* ======================
+     ORDER BY
+  ====================== */
+  $('#orderby').on('change', function () {
+    $('#order').val($(this).val());
+    $('#frmfilter').submit();
+  });
+
+  /* ======================
+     BRAND FILTER
+  ====================== */
+  $('input[name="brands"]').on('change', function () {
+    let brands = [];
+
+    $('input[name="brands"]:checked').each(function () {
+      brands.push($(this).val());
+    });
+
+    $('#hdnbrand').val(brands.join(','));
+    $('#frmfilter').submit();
+  });
+
+  /* ======================
+     CATEGORY FILTER
+  ====================== */
+  $('input[name="categories"]').on('change', function () {
+    let categories = [];
+
+    $('input[name="categories"]:checked').each(function () {
+      categories.push($(this).val());
+    });
+
+    $('#hdncategories').val(categories.join(','));
+    $('#frmfilter').submit();
+  });
+
+  /* ======================
+     PRICE FILTER
+  ====================== */
+
+$(document).ready(function () {
+
+  let priceSlider = $('.price-range-slider').slider({
+    min: 1,
+    max: 2000,
+    step: 5,
+    value: [
+      parseInt($('#hdnminprice').val()),
+      parseInt($('#hdnmaxprice').val())
+    ],
+    tooltip: 'hide'
+  });
+
+  priceSlider.on('slideStop', function (event) {
+    let values = event.value;
+
+    $('.price-range__min').text('$' + values[0]);
+    $('.price-range__max').text('$' + values[1]);
+
+    $('#hdnminprice').val(values[0]);
+    $('#hdnmaxprice').val(values[1]);
+
+    $('#frmfilter').submit();
+  });
+
+  });
+
+});
 </script>
 @endpush
