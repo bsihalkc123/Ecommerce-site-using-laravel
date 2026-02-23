@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Brand;
 use Carbon\Carbon;
+use App\Models\Coupon;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
@@ -349,7 +350,11 @@ class AdminController extends Controller
         return redirect()->route('admin.products')->with('status', 'Product deleted successfully.');
     }
     public function product_view($id){
-    $product = Product::with(['category', 'brand'])->findOrFail($id);
-    return view('admin.product-view', compact('product'));
+        $product = Product::with(['category', 'brand'])->findOrFail($id);
+        return view('admin.product-view', compact('product'));
+    }
+    public function coupons(){
+        $coupons = Coupon::orderBy('expiry_date','Desc')->paginate(12);
+        return view('admin.coupons', compact('coupons'));
     }
 }
