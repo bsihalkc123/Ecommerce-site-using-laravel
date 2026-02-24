@@ -163,10 +163,17 @@ class CartController extends Controller
 
         $order = new Order();
         $order->user_id = $userid;
+<<<<<<< HEAD
         $order->subtotal = Session::get('checkout')['subtotal'];
         $order->discount = Session::get('checkout')['discount'];    
         $order->tax = Session::get('checkout')['tax'];
         $order->total = Session::get('checkout')['total'];
+=======
+        $order->subtotal = (float) str_replace(',', '', Session::get('checkout')['subtotal']);
+        $order->discount = (float) str_replace(',', '', Session::get('checkout')['discount']);
+        $order->tax = (float) str_replace(',', '', Session::get('checkout')['tax']);
+        $order->total = (float) str_replace(',', '', Session::get('checkout')['total']);
+>>>>>>> f37e4e8 (user and admin order status added)
         $order->name = $address->name;
         $order->phone = $address->phone;
         $order->locality = $address->locality;
@@ -208,6 +215,7 @@ class CartController extends Controller
         Session::forget('coupon');
         Session::forget('discounts');
         Session::put('order_id', $order->id);
+<<<<<<< HEAD
         return redirect()->route('cart.order.confirmation', compact('order'));
         
     }
@@ -229,15 +237,57 @@ class CartController extends Controller
                 'subtotal' => cart::instance('cart')->subtotal(),
                 'tax' => cart::instance('cart')->tax(),
                 'total' => cart::instance('cart')->total()
+=======
+        return redirect()->route('cart.order.confirmation');
+        
+    }
+    public function setAmountforCheckout()
+    {
+        if(!Cart::instance('cart')->content()->count() > 0){
+            Session::forget('checkout');
+            return;
+        }
+
+        if(Session::has('coupon')){
+            Session::put('checkout', [
+                'discount' => (float) str_replace(',', '', Session::get('discounts')['discount']),
+                'subtotal' => (float) str_replace(',', '', Session::get('discounts')['subtotal']),
+                'tax' => (float) str_replace(',', '', Session::get('discounts')['tax']),
+                'total' => (float) str_replace(',', '', Session::get('discounts')['total']),
+            ]);
+        } 
+        else {
+            Session::put('checkout', [
+                'discount' => 0,
+                'subtotal' => (float) str_replace(',', '', Cart::instance('cart')->subtotal()),
+                'tax' => (float) str_replace(',', '', Cart::instance('cart')->tax()),
+                'total' => (float) str_replace(',', '', Cart::instance('cart')->total()),
+>>>>>>> f37e4e8 (user and admin order status added)
             ]);
         }
     }
     public function order_confirmation()
     {
+<<<<<<< HEAD
         if(Session::has('order_id')){
             $order = Order::find(Session::get('order_id'));
             return view('order-confirmation', compact('order'));
         }
         return redirect()->route('cart.index');
+=======
+        $order_id = Session::get('order_id');
+
+        if (!$order_id) {
+            return redirect()->route('cart.checkout');
+        }
+
+        $order = Order::with('orderItems.product')->find($order_id);
+
+        if (!$order) {
+            return redirect()->route('cart.checkout');
+        }
+
+        return view('order-confirmation', compact('order'));
+>>>>>>> f37e4e8 (user and admin order status added)
     }
 }
