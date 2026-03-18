@@ -143,6 +143,12 @@
                                         <div class="text">Coupons</div>
                                     </a>
                                 </li>
+                                <li class="menu-item">
+                                    <a href="{{ route('admin.contacts') }}" class="">
+                                        <div class="icon"><i class="icon-mail"></i></div>
+                                        <div class="text">Messages</div>
+                                    </a>
+                                </li>
 
                                 <li class="menu-item">
                                     <a href="users.html" class="">
@@ -162,7 +168,7 @@
                                    <form method="post" action="{{route('logout')}}" id="logout-form">
                                     @csrf
                                     <a href="{{route('logout')}}" class="" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                        <div class="icon"><i class="icon-settings"></i></div>
+                                        <div class="icon"><i class="icon-sign-out"></i></div>
                                         <div class="text">Logout</div>
                                     </a>
                                    </form>

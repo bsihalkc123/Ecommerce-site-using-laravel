@@ -9,6 +9,7 @@ use App\Models\OrderItem;
 use App\Models\Transaction;
 use App\Models\Slide;
 use App\Models\Category;
+use App\Models\Contact;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Laravel\Facades\Image;
@@ -567,5 +568,14 @@ class AdminController extends Controller
         }
         $slide->delete();
         return redirect()->route('admin.slides')->with('status', 'Slide deleted successfully.');
+    }
+    public function contacts(){
+        $contacts = Contact::orderBy('created_at','Desc')->paginate(10);
+        return view('admin.contacts', compact('contacts'));
+    }
+    public function contact_delete($id){
+        $contact = Contact::find($id);
+        $contact->delete();
+        return redirect()->route('admin.contacts')->with('status', 'Message deleted successfully.');
     }
 }
