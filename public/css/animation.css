@@ -270,6 +270,34 @@
   }
 }
 
+/* Product Hover Animation */
+@keyframes productHover {
+  0% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  100% {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.product-card:hover {
+  animation: productHover 0.3s ease-in-out forwards;
+}
+
+.product-card:hover .pc__img-wrapper {
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out;
+}
+
+.shopping-cart__product-item:hover {
+  transform: scale(1.02);
+  transition: transform 0.3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+}
+
 @keyframes preload {
 
   from,
